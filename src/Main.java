@@ -1,37 +1,36 @@
-import java.util.Arrays;
+import java.io.*;
 
 public class Main {
     public static void main(String[] args) {
-//        System.out.println("Hello World!");
-//        String name = "hieupv";
+//        How to write a file using Java (4 popular options)
+//        FileWriter = Good for small or medium-sized text files.
+//        BufferedWriter = Better performance for large amount
+//        PrintWriter = Best for structured data, like reports or logs
+//        FileOutputStream = Best for binary files (e.g., images, audio files)
+
+//        try (FileWriter writer = new FileWriter("text.txt")) {
+//            writer.write("I like pizza!");
 //
-//        int length = name.length();
-//        char letter = name.charAt(0);
-//
-//        System.out.println(length);
-//        System.out.println(letter);
-//
-//        String email = "hieupv@gmail.com";
-//
-//        System.out.println(email.substring(0, email.indexOf("@")));
-//        System.out.println(email.substring(email.indexOf("@")));
-//
-//        String day = "day";
-//        switch (day) {
-//            case "day" -> System.out.println("Day");
+//        } catch (IOException e) {
+//            System.out.println("Could not write file");
 //        }
 
-        // Array
-        String[] fruits = {"apple", "orange", "banana", "coconut"};
+//        How to read a file using Java (3 popular options)
+//        BufferedReader + FileReader: Best for reading text files line-by-line
+//        FileInputStream: Best for binary files (e.g., images, audio file)
+//        RandomAccessFile: Best for read/write specific portions of a large file.
 
-        Arrays.sort(fruits);
+        String filePath = "/Users/hunt2412/hieupvdev/learn/java/java-tutorials/test.txt";
 
-        for (String fruit : fruits) {
-            System.out.println(fruit);
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                System.out.println(line);
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("Could not locate file");
+        } catch (IOException e) {
+            System.out.println("Could not read file");
         }
-
-        String[] foods = new String[1];
-        foods[0] = "pizza";
-        System.out.println(Arrays.toString(foods));
     }
 }
