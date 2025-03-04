@@ -84,3 +84,54 @@ Dựa trên bài tập 1:
 - Dùng Stream để lọc sinh viên có điểm trên 8.0.
 - Chuyển danh sách thành List<String> chỉ chứa tên sinh viên.
 - Thu thập kết quả và in ra.
+
+## 5. Optional
+
+Giải thích
+
+- Optional: Lớp từ Java 8 để tránh NullPointerException, đại diện cho giá trị có thể null.
+- Phương thức chính:
+  of(value), ofNullable(value): Tạo Optional.
+  isPresent(): Kiểm tra có giá trị không.
+  orElse(defaultValue): Lấy giá trị hoặc mặc định.
+  map(transform): Chuyển đổi giá trị nếu có.
+- Thực tế: Xử lý dữ liệu từ database hoặc API khi giá trị có thể null.
+- Ứng dụng trong Spring
+  Trong repository.findById(id) trả về Optional<User>.
+  Bài tập
+
+Dựa trên bài tập 1:
+
+Viết phương thức tìm sinh viên theo ID từ Map, trả về Optional<Student>.
+Xử lý trường hợp không tìm thấy (in "Not found" hoặc trả về sinh viên mặc định).
+
+## 6. Annotation
+
+- Giải thích Annotation: Metadata gắn vào code (@Override, @Deprecated), từ Java 5.
+- Cách dùng: Đánh dấu, cung cấp thông tin cho compiler, runtime, hoặc framework.
+- Thực tế: Dùng để cấu hình, validate, hoặc tạo custom logic (như logging).
+- Ứng dụng trong Spring
+  @Autowired, @Entity, @GetMapping là annotation cốt lõi.
+
+Bài tập
+Tạo annotation @LogTime để ghi log thời gian thực thi của phương thức.
+Áp dụng cho phương thức tính điểm trung bình trong bài tập 3.
+In thời gian thực thi (dùng System.currentTimeMillis()).
+
+## 7. Reflection
+
+- Giải thích
+  Reflection: Cơ chế kiểm tra và sửa đổi cấu trúc/lớp tại runtime (java.lang.reflect).
+- Phương thức chính:
+  Class.forName(): Lấy Class object.
+  getDeclaredFields(), getDeclaredMethods(): Lấy thông tin field/method.
+  invoke(): Gọi phương thức động.
+  Thực tế: Dùng để xây dựng framework, debug, hoặc xử lý generic type.
+- Ứng dụng trong Spring
+  Spring dùng reflection để quét @Component, inject dependency, hoặc map entity.
+
+Bài tập
+Viết chương trình dùng reflection để:
+Lấy tất cả field của lớp Student.
+Gọi phương thức toString() trên instance Student động.
+In thông tin field và kết quả toString().

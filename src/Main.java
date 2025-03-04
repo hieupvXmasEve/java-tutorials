@@ -1,3 +1,6 @@
+import java.lang.annotation.*;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -6,7 +9,7 @@ public class Main {
         return a > b;
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws NoSuchMethodException {
 
 
         List<Student> studentList = new ArrayList<>();
@@ -30,6 +33,15 @@ public class Main {
         System.out.println("\nDanh sách sinh viên sau khi xóa:");
         printStudentInfo(studentList, studentScores);
 
+        // Tính tổng điểm trung bình có log thời gian
+        Method method = Main.class.getDeclaredMethod("calculateAverageScore", Map.class);
+        if (method.isAnnotationPresent(LogTime.class)) {
+            long startTime = System.currentTimeMillis();
+            double averageScore = calculateAverageScore(studentScores);
+            long endTime = System.currentTimeMillis();
+            System.out.println("\nĐiểm trung bình của sinh viên: " + averageScore);
+            System.out.println("Thời gian thực thi: " + (endTime - startTime) + "ms");
+        }
         // Tính tổng điểm trung bình
         double averageScore = calculateAverageScore(studentScores);
         System.out.println("\nĐiểm trung bình của sinh viên: " + averageScore);
@@ -49,6 +61,10 @@ public class Main {
 
         // Tìm sinh viên theo ID
         findStudentById(studentList, "S001").ifPresentOrElse(System.out::println, () -> System.out.println("Not found"));
+
+        // Lấy tất cả field của lớp Student và gọi toString() động
+        Student sampleStudent = new Student("S999", "Eve", 23);
+        printStudentFields(sampleStudent);
     }
 
     private static void addStudent(List<Student> studentList, Set<String> studentIds, Map<String, Double> studentScores, String id, String name, int age, double score) {
@@ -81,6 +97,7 @@ public class Main {
         }
     }
 
+    @LogTime
     private static double calculateAverageScore(Map<String, Double> studentScores) {
         double totalScore = 0;
         for (Double score : studentScores.values()) {
@@ -100,5 +117,19 @@ public class Main {
 
     private static Optional<Student> findStudentById(List<Student> studentList, String id) {
         return studentList.stream().filter(student -> student.getId().equals(id)).findFirst();
+    }
+
+    private static void printStudentFields(Student student) {
+        System.out.println("\nThông tin các field của Student:");
+        Field[] fields = Student.class.getDeclaredFields();
+
+        for (Field field : fields) {
+            field.setAccessible(true);
+            try {
+                System.out.println(field.getName() + " " + field.get(student));
+            } catch (IllegalAccessException e) {
+                System.out.println("Không thể truy cập field: " + field.getName());
+            }
+        }
     }
 }
